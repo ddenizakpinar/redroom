@@ -1,0 +1,80 @@
+@import "./variables.scss";
+input:focus,
+button:focus,
+button:active {
+  outline: none;
+  box-shadow: none;
+  box-shadow: none;
+}
+
+.login-page {
+  background-color: $black;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center; // cross
+  justify-content: center; // main
+
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    width: 325px;
+    align-items: center;
+
+    .title {
+      font-weight: 700;
+      color: $white;
+      text-align: center;
+      font-size: $text-size-extra-big;
+      margin: $margin-size-3 0px;
+    }
+
+    .input {
+      margin-bottom: $margin-size-2;
+    }
+
+    .submit-button {
+      cursor: pointer;
+      width: 100%;
+      margin-top: 4px;
+      margin-bottom: $margin-size-2;
+      background-color: $darkblue;
+      padding: 12px;
+      border-radius: 5px;
+      color: $white;
+      border: none;
+      font-size: $text-size-medium;
+
+      transition: 0.3s;
+      &:hover {
+        background-color: lighten($darkblue, 1%);
+      }
+    }
+
+    .sign-up {
+      text-align: center;
+      font-size: $text-size-small;
+      color: $white;
+      margin-top: 2px;
+      a {
+        transition: 0.3s;
+        color: $blue;
+        text-decoration: none;
+        &:hover {
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.main-page {
+  background-color: $black;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 20% 65% 15%;
+
+  @media only screen and (max-width: $media-xl) {
+    grid-template-columns: 33% 45% 22%;
+  }
+}
