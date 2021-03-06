@@ -1,10 +1,8 @@
-// users.js
-
 const { admin, db } = require("../util/admin");
-const config = require("../util/config");
 
 const firebase = require("firebase");
 
+const config = require("../util/config");
 firebase.initializeApp(config);
 
 const { validateLoginData, validateSignUpData } = require("../util/validators");
@@ -40,11 +38,7 @@ exports.loginUser = (request, response) => {
 
 exports.signUpUser = (request, response) => {
   const newUser = {
-    firstName: request.body.firstName,
-    lastName: request.body.lastName,
     email: request.body.email,
-    phoneNumber: request.body.phoneNumber,
-    country: request.body.country,
     password: request.body.password,
     confirmPassword: request.body.confirmPassword,
     username: request.body.username,
@@ -75,11 +69,7 @@ exports.signUpUser = (request, response) => {
     .then((idtoken) => {
       token = idtoken;
       const userCredentials = {
-        firstName: newUser.firstName,
-        lastName: newUser.lastName,
         username: newUser.username,
-        phoneNumber: newUser.phoneNumber,
-        country: newUser.country,
         email: newUser.email,
         createdAt: new Date().toISOString(),
         userId,
