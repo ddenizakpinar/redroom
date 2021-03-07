@@ -12,7 +12,7 @@ import Button from "../components/Button";
 class LoginPage extends Component {
   login = (values, action) => {
     axiosConfig
-      .post("/users/login", { ...values })
+      .post("/user/login", { ...values })
       .then((res) => {
         localStorage.setItem("token", res.data.token);
         this.props.history.push("/");

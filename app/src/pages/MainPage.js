@@ -20,7 +20,7 @@ class MainPage extends Component {
 
   componentDidMount() {
     axiosConfig
-      .get("/categories")
+      .get("/category")
       .then((res) => {
         this.setState({
           categories: res.data,
@@ -41,7 +41,7 @@ class MainPage extends Component {
 
   createCategory = (values) => {
     axiosConfig
-      .post("/categories", { ...values })
+      .post("/category", { ...values })
       .then((res) => {
         this.closeCreateCategoryModal();
         const newCategories = this.state.categories.length
@@ -59,7 +59,7 @@ class MainPage extends Component {
 
   editCategory = (values) => {
     axiosConfig
-      .put("/categories/" + this.state.category.id, { ...values })
+      .put("/category/" + this.state.category.id, { ...values })
       .then((res) => {
         this.closeCreateCategoryModal();
 
@@ -78,7 +78,7 @@ class MainPage extends Component {
 
   deleteCategory = (values) => {
     axiosConfig
-      .delete("/categories/" + this.state.category.id)
+      .delete("/category/" + this.state.category.id)
       .then((res) => {
         this.closeCreateCategoryModal();
 

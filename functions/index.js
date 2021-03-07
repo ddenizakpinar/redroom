@@ -4,10 +4,12 @@ const cors = require("cors");
 
 app.use(cors());
 
-const usersRouter = require("./routes/users");
+const userRouter = require("./routes/user");
 const categoryRouter = require("./routes/category");
+const noteRouter = require("./routes/note");
 
-app.use("/users", usersRouter);
-app.use("/categories", categoryRouter);
+app.use("/user", userRouter);
+app.use("/category", categoryRouter);
+app.use("/note", noteRouter);
 
 exports.api = functions.https.onRequest(app);
