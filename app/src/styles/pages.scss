@@ -63,7 +63,6 @@ button:active {
     .title {
       padding: 30px 0px 15px 24px;
       font-size: $text-size-big;
-
     }
     .create {
       margin: 30px 0px 0px 24px;
@@ -117,7 +116,64 @@ button:active {
     }
   }
 
+  .notes {
+    margin: 0 auto;
+    padding: 60px 20px 12px 20px;
+    width: 800px;
+    color: $white;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box;
+    .title {
+      font-weight: 700;
+      font-size: $text-size-extra-big;
+    }
+
+    .add {
+      border: 1px dashed lighten($color: $lightgrey, $amount: 10);
+      padding: 12px 12px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      .create {
+        margin-right: $margin-size-2;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        font-size: 16px;
+        color: $grey;
+      }
+    }
+
+    .notes-wrap {
+      .title {
+        font-size: 1.1rem;
+      }
+      .tasks {
+      }
+
+      .completed {
+      }
+    }
+  }
+
   @media only screen and (max-width: $media-xl) {
-    grid-template-columns: 300px auto;
+    .notes {
+      width: 600px;
+    }
+  }
+  @media only screen and (max-width: $media-lg) {
+    .notes {
+      width: 450px;
+    }
+  }
+  @media only screen and (max-width: $media-md) {
+    .notes {
+      width: 100%;
+    }
   }
 }

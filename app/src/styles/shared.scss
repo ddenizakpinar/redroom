@@ -520,6 +520,13 @@ code {
         }
       }
     }
+
+    .note-modal {
+      .date {
+        display: flex;
+        align-items: center;
+      }
+    }
   }
 }
 
@@ -541,5 +548,53 @@ code {
   }
   &.danger {
     background-color: $red;
+  }
+}
+
+.checkbox {
+  font-size: 26px;
+  color: $pink;
+  cursor: pointer;
+}
+
+.datepicker {
+  margin-left: 10px;
+  .react-date-picker {
+    background-color: white;
+    border-radius: 4px;
+    outline: none;
+    .react-date-picker__wrapper {
+      border: none;
+    }
+  }
+}
+
+.note {
+  background-color: $lightgrey;
+  padding: 12px 12px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .note-wrap {
+    border-radius: 12px;
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    .info {
+      width: 100%;
+      .note-title {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        font-size: $text-size-medium;
+        font-weight: 500;
+
+        i{
+          cursor: pointer;
+        }
+      }
+    }
   }
 }

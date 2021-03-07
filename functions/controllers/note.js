@@ -9,9 +9,10 @@ exports.newNote = (request, response) => {
 
   const newNote = {
     title: request.body.title,
-    checked: false,
+    checked: request.body.checked,
     content: request.body.content,
     createdAt: new Date().toISOString(),
+    date: request.body.date,
     userId: request.user.user_id,
     categoryId: request.body.categoryId,
   };
@@ -35,7 +36,7 @@ exports.getNotes = async (request, response) => {
   const notesRef = db.collection("notes");
   const snapshot = await notesRef
     .where("userId", "==", request.user.user_id)
-    .where("categoryId", "==", request.body.categoryId)
+    .where("categoryId", "==", request.params.categoryId)
     .get();
   if (snapshot.empty) {
     return response.status(204).json({});

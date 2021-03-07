@@ -8,11 +8,18 @@ const Schemas = {
   signupSchema: Yup.object().shape({
     email: Yup.string().required().min(5).max(20),
     password: Yup.string().required().min(5).max(20),
-    username: Yup.string().required().min(5).max(20)
+    username: Yup.string().required().min(5).max(20),
   }),
   categorySchema: Yup.object().shape({
     name: Yup.string().required().min(3).max(20),
-    background: Yup.string().required()
+    background: Yup.string().required(),
+  }),
+  noteSchema: Yup.object().shape({
+    title: Yup.string().required().min(3).max(20),
+    content: Yup.string().required().min(3).max(20),
+    collection: Yup.mixed(),
+    checked: Yup.bool().required(),
+    date: Yup.mixed()
   }),
 };
 

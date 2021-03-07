@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { Formik } from "formik";
 import { CirclePicker } from "react-color";
 
-import Modal from "../components/Modal";
+import Modal from "./Modal";
 import axiosConfig from "../axiosConfig";
-import Input from "../components/Input";
+import Input from "./Input";
 import Schemas from "../Schemas";
-import Button from "../components/Button";
+import Button from "./Button";
 
 class CategoryModal extends Component {
   setFieldValue;
@@ -22,14 +22,14 @@ class CategoryModal extends Component {
   componentDidMount() {}
 
   componentDidUpdate(prevProps) {
-    if (prevProps.category !== this.props.category) {
+    if (prevProps.editingCollection !== this.props.editingCollection) {
       this.setFieldValue(
         "name",
-        this.props.category ? this.props.category.name : ""
+        this.props.editingCollection ? this.props.editingCollection.name : ""
       );
       this.setFieldValue(
         "background",
-        this.props.category ? this.props.category.background : ""
+        this.props.editingCollection ? this.props.editingCollection.background : ""
       );
       this.setState({ delete: false });
     }
@@ -44,8 +44,8 @@ class CategoryModal extends Component {
     return (
       <Modal
         show={this.props.show}
-        closeModal={() => this.props.closeCreateCategoryModal()}
-        title={this.props.category ? "Update Collection" : "Create Collection"}
+        closeModal={() => this.props.closeCreateCollectionModal()}
+        title={this.props.editingCollection ? "Update Collection" : "Create Collection"}
       >
         <div className="category-modal">
           <Formik
@@ -54,9 +54,9 @@ class CategoryModal extends Component {
               background: "",
             }}
             onSubmit={(e) =>
-              this.props.category
-                ? this.props.editCategory(e)
-                : this.props.createCategory(e)
+              this.props.editingCollection
+                ? this.props.editCollection(e)
+                : this.props.createCollection(e)
             }
             validationSchema={Schemas.categorySchema}
           >
@@ -70,7 +70,7 @@ class CategoryModal extends Component {
             }) => {
               this.setFieldValue = setFieldValue;
               return (
-                <div className="login-container">
+                <div className="input-container">
                   <Input
                     className="my-3"
                     name="name"
@@ -92,9 +92,9 @@ class CategoryModal extends Component {
                     onClick={handleSubmit}
                     className="submit-button"
                   >
-                    {this.props.category ? "Update" : "Create"}
+                    {this.props.editingCollection ? "Update" : "Create"}
                   </Button>
-                  {this.props.category ? (
+                  {this.props.editingCollection ? (
                     <span
                       className="delete pr-1"
                       onClick={() => this.setState({ delete: true })}
@@ -105,7 +105,7 @@ class CategoryModal extends Component {
                   {this.state.delete ? (
                     <span className="sure">
                       <span>Are you sure?</span>
-                      <span className="yes pl-1" onClick={this.props.deleteCategory}>
+                      <span className="yes pl-1" onClick={this.props.deleteCollection}>
                         Yes
                       </span>
                       <span

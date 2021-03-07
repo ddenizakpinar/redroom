@@ -1,20 +1,18 @@
 import React, { Component } from "react";
-import { Formik } from "formik";
-import { CirclePicker } from "react-color";
 
-import Modal from "../components/Modal";
-import CategoryModal from "../components/CategoryModal";
+import CollectionModal from "../components/CollectionModal";
+import NoteModal from "../components/NoteModal";
+import Note from "../components/Note";
 import axiosConfig from "../axiosConfig";
-import Input from "../components/Input";
-import Schemas from "../Schemas";
-import Button from "../components/Button";
 
 class MainPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      categories: [],
-      categoryModal: false,
+      collections: [],
+      collectionModal: false,
+      selectedCollection: null,
+      notes: [],
     };
   }
 
@@ -23,7 +21,7 @@ class MainPage extends Component {
       .get("/category")
       .then((res) => {
         this.setState({
-          categories: res.data,
+          collections: res.data,
         });
       })
       .catch((err) => {
@@ -31,25 +29,76 @@ class MainPage extends Component {
       });
   }
 
-  openCreateCategoryModal = (category = null) => {
-    this.setState({ category: category, categoryModal: true });
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.selectedCollection !== this.state.selectedCollection) {
+      axiosConfig
+        .get("/note/" + this.state.selectedCollection?.id)
+        .then((res) => {
+          this.setState({
+            notes: res.data,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
+
+  selectCollection(collection) {
+    console.log(collection);
+    this.setState({ selectedCollection: collection });
+  }
+
+  openCreateNoteModal = (editingNote = null) => {
+    this.setState({
+      editingNote: editingNote,
+      noteModal: true,
+    });
   };
 
-  closeCreateCategoryModal = () => {
-    this.setState({ categoryModal: false });
+  closeCreateNoteModal = () => {
+    this.setState({ noteModal: false });
   };
 
-  createCategory = (values) => {
+  createNote = (values) => {
+    axiosConfig
+      .post("/note", { ...values, categoryId: values.collection.id })
+      .then((res) => {
+        this.closeCreateNoteModal();
+        const newNotes = this.state.notes.length ? this.state.notes : [];
+        newNotes.push(res.data);
+        this.setState((prevState) => ({
+          notes: newNotes,
+        }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // Collection
+  openCreateCollectionModal = (editingCollection = null) => {
+    this.setState({
+      editingCollection: editingCollection,
+      collectionModal: true,
+    });
+  };
+
+  closeCreateCollectionModal = () => {
+    this.setState({ collectionModal: false });
+  };
+
+  createCollection = (values) => {
     axiosConfig
       .post("/category", { ...values })
       .then((res) => {
-        this.closeCreateCategoryModal();
-        const newCategories = this.state.categories.length
-          ? this.state.categories
+        this.closeCreateCollectionModal();
+        const newCollections = this.state.collections.length
+          ? this.state.collections
           : [];
-        newCategories.push(res.data);
+        newCollections.push(res.data);
         this.setState((prevState) => ({
-          categories: newCategories,
+          categories: newCollections,
         }));
       })
       .catch((err) => {
@@ -57,18 +106,18 @@ class MainPage extends Component {
       });
   };
 
-  editCategory = (values) => {
+  editCollection = (values) => {
     axiosConfig
-      .put("/category/" + this.state.category.id, { ...values })
+      .put("/category/" + this.state.editingCollection.id, { ...values })
       .then((res) => {
-        this.closeCreateCategoryModal();
+        this.closeCreateCollectionModal();
 
-        let newCategories = this.state.categories;
-        newCategories = newCategories.map((x) =>
-          x.id === this.state.category.id ? { ...x, ...values } : x
+        let newCollections = this.state.collections;
+        newCollections = newCollections.map((x) =>
+          x.id === this.state.editingCollection.id ? { ...x, ...values } : x
         );
         this.setState((prevState) => ({
-          categories: newCategories,
+          collections: newCollections,
         }));
       })
       .catch((err) => {
@@ -76,18 +125,18 @@ class MainPage extends Component {
       });
   };
 
-  deleteCategory = (values) => {
+  deleteCollection = (values) => {
     axiosConfig
-      .delete("/category/" + this.state.category.id)
+      .delete("/category/" + this.state.editingCollection.id)
       .then((res) => {
-        this.closeCreateCategoryModal();
+        this.closeCreateCollectionModal();
 
-        let newCategories = this.state.categories;
-        newCategories = newCategories.filter(
-          (x) => x.id !== this.state.category.id
+        let newCollections = this.state.collections;
+        newCollections = newCollections.filter(
+          (x) => x.id !== this.state.editingCollection.id
         );
         this.setState((prevState) => ({
-          categories: newCategories,
+          collections: newCollections,
         }));
       })
       .catch((err) => {
@@ -96,24 +145,34 @@ class MainPage extends Component {
   };
 
   render() {
+    const tasks = this.state.notes.length
+      ? this.state.notes?.filter((x) => !x.checked)
+      : [];
+    const completed = this.state.notes.length
+      ? this.state.notes?.filter((x) => x.checked)
+      : [];
     return (
       <div className="main-page">
         <div className="collections">
           <div className="title">Collections</div>
-          {this.state.categories.length
-            ? this.state.categories.map((category) => {
+          {this.state.collections.length
+            ? this.state.collections.map((collection) => {
                 return (
-                  <div className="collection" key={category.id}>
+                  <div
+                    className="collection"
+                    key={collection.id}
+                    onClick={() => this.selectCollection(collection)}
+                  >
                     <div className="info">
                       <div
                         className="color"
-                        style={{ backgroundColor: category.background }}
+                        style={{ backgroundColor: collection.background }}
                       ></div>
-                      <div>{category.name}</div>
+                      <div>{collection.name}</div>
                     </div>
                     <div
                       className="edit"
-                      onClick={() => this.openCreateCategoryModal(category)}
+                      onClick={() => this.openCreateCollectionModal(collection)}
                     >
                       <i className="fas fa-edit"></i>
                     </div>
@@ -123,19 +182,61 @@ class MainPage extends Component {
             : null}
           <div
             className="create"
-            onClick={() => this.openCreateCategoryModal()}
+            onClick={() => this.openCreateCollectionModal()}
           >
             <i className="fas fa-plus"></i>
           </div>
         </div>
-        <div>Main Content</div>
-        <CategoryModal
-          category={this.state.category}
-          show={this.state.categoryModal}
-          closeCreateCategoryModal={this.closeCreateCategoryModal}
-          createCategory={this.createCategory}
-          editCategory={this.editCategory}
-          deleteCategory={this.deleteCategory}
+        <div className="notes">
+          <div>
+            <div className="title">{this.state.selectedCollection?.name}</div>
+            <div
+              className="add mt-4"
+              onClick={() => this.openCreateNoteModal()}
+            >
+              <div
+                style={{
+                  backgroundColor: this.state.selectedCollection?.background,
+                }}
+                className="create"
+              >
+                <i className="fas fa-plus"></i>
+              </div>
+              <div>Add a task</div>
+            </div>
+            <div className="notes-wrap mt-3">
+              <div className="tasks">
+                <div className="title">Tasks - {tasks.length}</div>
+                {tasks.map((note) => (
+                  <Note note={note} />
+                ))}
+              </div>
+              <div className="completed">
+                <div className="title">Completed - {completed.length}</div>
+                {completed.map((note) => (
+                  <Note note={note} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+        <CollectionModal
+          editingCollection={this.state.editingCollection}
+          show={this.state.collectionModal}
+          closeCreateCollectionModal={this.closeCreateCollectionModal}
+          createCollection={this.createCollection}
+          editCollection={this.editCollection}
+          deleteCollection={this.deleteCollection}
+        />
+        <NoteModal
+          editingNote={this.state.editingNote}
+          show={this.state.noteModal}
+          closeCreateNoteModal={this.closeCreateNoteModal}
+          createNote={this.createNote}
+          editNote={this.editNote}
+          deleteNote={this.deleteNote}
+          collections={this.state.collections}
+          selectedCollection={this.state.selectedCollection}
         />
       </div>
     );
