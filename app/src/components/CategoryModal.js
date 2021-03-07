@@ -35,39 +35,6 @@ class CategoryModal extends Component {
     }
   }
 
-  createCategory = (values) => {
-    axiosConfig
-      .post("/categories", { ...values })
-      .then((res) => {
-        this.props.closeCreateCategoryModal();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  editCategory = (values) => {
-    axiosConfig
-      .put("/categories/" + this.props.category.id, { ...values })
-      .then((res) => {
-        this.props.closeCreateCategoryModal();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  deleteCategory = (values) => {
-    axiosConfig
-      .delete("/categories/" + this.props.category.id)
-      .then((res) => {
-        this.props.closeCreateCategoryModal();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   onColorChange = (color) => {
     this.setState({ background: color.hex }, () => {
       this.setFieldValue("background", color.hex);
@@ -88,8 +55,8 @@ class CategoryModal extends Component {
             }}
             onSubmit={(e) =>
               this.props.category
-                ? this.editCategory(e)
-                : this.createCategory(e)
+                ? this.props.editCategory(e)
+                : this.props.createCategory(e)
             }
             validationSchema={Schemas.categorySchema}
           >
@@ -138,7 +105,7 @@ class CategoryModal extends Component {
                   {this.state.delete ? (
                     <span className="sure">
                       <span>Are you sure?</span>
-                      <span className="yes pl-1" onClick={this.deleteCategory}>
+                      <span className="yes pl-1" onClick={this.props.deleteCategory}>
                         Yes
                       </span>
                       <span

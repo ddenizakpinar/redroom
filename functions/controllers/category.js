@@ -18,7 +18,7 @@ exports.newCategory = (request, response) => {
   db.collection("categories")
     .add(newCategory)
     .then((doc) => {
-      return response.json(newCategory);
+      return response.json({ ...newCategory, id: doc.id });
     })
     .catch((err) => {
       response.status(500);
