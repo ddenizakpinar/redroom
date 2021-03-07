@@ -7,6 +7,7 @@ import axiosConfig from "../axiosConfig";
 import Note from "../assets/img/note.png";
 import Schemas from "../Schemas";
 import Input from "../components/Input";
+import Button from "../components/Button";
 
 class LoginPage extends Component {
   login = (values, action) => {
@@ -49,13 +50,13 @@ class LoginPage extends Component {
                   type="password"
                   error={touched.password && errors.password}
                 />
-                <button
+                <Button
                   type="button"
                   onClick={handleSubmit}
                   className="submit-button"
                 >
                   Log in
-                </button>
+                </Button>
                 <div className="sign-up">
                   Don't have an account? <Link to="/signup">Sign up</Link>
                 </div>

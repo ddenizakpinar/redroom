@@ -10,6 +10,7 @@ exports.newCategory = (request, response) => {
 
   const newCategory = {
     name: request.body.name,
+    background: request.body.background,
     createdAt: new Date().toISOString(),
     userId: request.user.user_id,
   };
@@ -41,7 +42,7 @@ exports.getCategories = async (request, response) => {
   let resArray = [];
 
   snapshot.forEach((doc) => {
-    resArray.push({ [doc.id]: doc.data() });
+    resArray.push({ ...doc.data(), id: doc.id });
   });
 
   response.json(resArray);

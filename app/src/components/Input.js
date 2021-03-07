@@ -2,10 +2,10 @@ import React, { Component } from "react";
 
 class Input extends Component {
   getClassName = () => {
-    let className = "input ";
+    let className = "input " + this.props.className;
     switch (this.props.type) {
       case "transparent":
-        className += "transparent ";
+        className += " transparent ";
         break;
       default:
         break;

@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import MainPage from "./pages/MainPage";
 
 class App extends Component {
   render() {
@@ -14,6 +15,9 @@ class App extends Component {
           </Route>
           <Route path="/signup">
             <SignupPage />
+          </Route>
+          <Route path="/">
+            <MainPage />
           </Route>
         </Switch>
       </div>
