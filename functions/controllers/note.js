@@ -2,10 +2,13 @@ const { admin, db } = require("../util/admin");
 
 const firebase = require("firebase");
 
-exports.newNote = (request, response) => {
+exports.newNote = async (request, response) => {
   if (!request.body) {
     return response.status(400);
   }
+
+  const categoriesRef = await db.collection("categories");
+  const category = await categoriesRef.doc(request.body.categoryId).get();
 
   const newNote = {
     title: request.body.title,
@@ -15,6 +18,7 @@ exports.newNote = (request, response) => {
     date: request.body.date,
     userId: request.user.user_id,
     categoryId: request.body.categoryId,
+    collection: category.data()
   };
 
   db.collection("notes")

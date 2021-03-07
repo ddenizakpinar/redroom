@@ -10,12 +10,16 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 
 class LoginPage extends Component {
-  login = (values, action) => {
+  login = async (values, action) => {
     axiosConfig
       .post("/user/login", { ...values })
       .then((res) => {
-        localStorage.setItem("token", res.data.token);
-        this.props.history.push("/");
+        localStorage.setItem("token", res.data.token).then(() => {
+          axiosConfig.defaults.headers.common["Authorization"] =
+            "Bearer " + res.data.token;
+
+          this.props.history.push("/");
+        });
       })
       .catch((err) => {
         console.warn(err);

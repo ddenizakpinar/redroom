@@ -81,9 +81,14 @@ class MainPage extends Component {
       .then((res) => {
         this.closeCreateNoteModal();
         const newNotes = this.state.notes.length ? this.state.notes : [];
-        if (this.state.selectedCollection.id === values.collection.id) {
+        if (
+          this.state.selectedCollection == null ||
+          this.state.selectedCollection.id === values.collection.id
+        ) {
+          console.log("??");
           newNotes.push(res.data);
         }
+        console.log(this.state.selectedCollection);
         this.setState((prevState) => ({
           notes: newNotes,
         }));
@@ -164,7 +169,7 @@ class MainPage extends Component {
           : [];
         newCollections.push(res.data);
         this.setState((prevState) => ({
-          categories: newCollections,
+          collections: newCollections,
         }));
       })
       .catch((err) => {
