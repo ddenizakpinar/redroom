@@ -2,7 +2,9 @@ import React, { Component } from "react";
 
 class CheckboxX extends Component {
   onChangeHandler = (e) => {
-    this.props.setFieldValue(this.props.name, !this.props.checked);
+    if (this.props.setFieldValue) {
+      this.props.setFieldValue(this.props.name, !this.props.checked);
+    }
 
     if (typeof this.props.onClick === "function") {
       this.props.onClick();
@@ -18,15 +20,16 @@ class CheckboxX extends Component {
   render() {
     return (
       <div
+        style={{ color: this.props.color }}
         className={this.getClassName()}
         onClick={() => {
           this.onChangeHandler();
         }}
       >
         {this.props.checked ? (
-          <i class="fas fa-check-circle"></i>
+          <i className="fas fa-check-circle"></i>
         ) : (
-          <i class="far fa-circle"></i>
+          <i className="far fa-circle"></i>
         )}
       </div>
     );

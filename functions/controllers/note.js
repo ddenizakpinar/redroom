@@ -28,12 +28,12 @@ exports.newNote = (request, response) => {
     });
 };
 
-exports.getNotes = async (request, response) => {
+exports.getNotesByCategory = async (request, response) => {
   if (!request.body) {
     return response.status(400);
   }
 
-  const notesRef = db.collection("notes");
+  const notesRef = await db.collection("notes");
   const snapshot = await notesRef
     .where("userId", "==", request.user.user_id)
     .where("categoryId", "==", request.params.categoryId)
@@ -42,13 +42,65 @@ exports.getNotes = async (request, response) => {
     return response.status(204).json({});
   }
 
-  let resArray = [];
+  const categoriesRef = await db.collection("categories");
 
-  snapshot.forEach((doc) => {
-    resArray.push({ ...doc.data(), id: doc.id });
+  let resArray = [];
+  let data = [];
+
+  snapshot.forEach(async (doc) => {
+    const noteData = doc.data();
+    resArray.push({ ...noteData, id: doc.id });
   });
 
-  response.json(resArray);
+  var promise = Promise.all(
+    resArray.map(async (res) => {
+      var temp = {};
+      const category = await categoriesRef.doc(res.categoryId).get();
+      temp = res;
+      temp.collection = category.data();
+      data.push(temp);
+    })
+  );
+  promise.then((r) => {
+    response.json(resArray);
+  });
+};
+
+exports.getNotes = async (request, response) => {
+  if (!request.body) {
+    return response.status(400);
+  }
+
+  const notesRef = await db.collection("notes");
+  const snapshot = await notesRef
+    .where("userId", "==", request.user.user_id)
+    .get();
+  if (snapshot.empty) {
+    return response.status(204).json({});
+  }
+
+  const categoriesRef = await db.collection("categories");
+
+  let resArray = [];
+  let data = [];
+
+  snapshot.forEach(async (doc) => {
+    const noteData = doc.data();
+    resArray.push({ ...noteData, id: doc.id });
+  });
+
+  var promise = Promise.all(
+    resArray.map(async (res) => {
+      var temp = {};
+      const category = await categoriesRef.doc(res.categoryId).get();
+      temp = res;
+      temp.collection = category.data();
+      data.push(temp);
+    })
+  );
+  promise.then((r) => {
+    response.json(resArray);
+  });
 };
 
 exports.deleteNote = async (request, response) => {

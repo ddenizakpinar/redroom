@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { Formik } from "formik";
-import { CirclePicker } from "react-color";
 
 import Modal from "./Modal";
-import axiosConfig from "../axiosConfig";
 import Input from "./Input";
 import Schemas from "../Schemas";
 import Button from "./Button";
+import ColorPicker from "./ColorPicker";
 
 class CategoryModal extends Component {
   setFieldValue;
@@ -29,23 +28,24 @@ class CategoryModal extends Component {
       );
       this.setFieldValue(
         "background",
-        this.props.editingCollection ? this.props.editingCollection.background : ""
+        this.props.editingCollection
+          ? this.props.editingCollection.background
+          : ""
       );
       this.setState({ delete: false });
     }
   }
 
-  onColorChange = (color) => {
-    this.setState({ background: color.hex }, () => {
-      this.setFieldValue("background", color.hex);
-    });
-  };
   render() {
     return (
       <Modal
         show={this.props.show}
         closeModal={() => this.props.closeCreateCollectionModal()}
-        title={this.props.editingCollection ? "Update Collection" : "Create Collection"}
+        title={
+          this.props.editingCollection
+            ? "Update Collection"
+            : "Create Collection"
+        }
       >
         <div className="category-modal">
           <Formik
@@ -80,11 +80,12 @@ class CategoryModal extends Component {
                     error={touched.name && errors.name}
                   />
                   <div className="my-2">
-                    <CirclePicker
+                    <ColorPicker
+                      name="background"
                       circleSize={20}
                       width={"100%"}
                       color={values.background}
-                      onChangeComplete={this.onColorChange}
+                      setFieldValue={setFieldValue}
                     />
                   </div>
                   <Button
@@ -105,7 +106,10 @@ class CategoryModal extends Component {
                   {this.state.delete ? (
                     <span className="sure">
                       <span>Are you sure?</span>
-                      <span className="yes pl-1" onClick={this.props.deleteCollection}>
+                      <span
+                        className="yes pl-1"
+                        onClick={this.props.deleteCollection}
+                      >
                         Yes
                       </span>
                       <span

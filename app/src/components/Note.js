@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import moment from "moment";
 
 import Checkbox from "./Checkbox";
 
@@ -22,24 +23,39 @@ class Note extends Component {
     return (
       <div className="note my-2">
         <div className="note-wrap">
-          <Checkbox className="mr-2" checked={note.checked} />
+          <Checkbox
+            onClick={() => this.props.openCreateNoteModal(note)}
+            className="mr-2"
+            checked={note.checked}
+            color={this.props.selectedCollection?.background}
+          />
           <div className="info mt-1">
             <div className="note-title">
               <div>{note.title}</div>
-              <div onClick={() => this.showContentHandler()}>
-                {this.state.showContent ? (
-                  <i class="fas fa-chevron-down"></i>
-                ) : (
-                  <i class="fas fa-chevron-up"></i>
-                )}
+              <div className="icons">
+                <i
+                  onClick={() => this.props.openCreateNoteModal(note)}
+                  className="fas fa-edit "
+                ></i>
+                <div onClick={() => this.showContentHandler()}>
+                  {note.content ? (
+                    this.state.showContent ? (
+                      <i className="ml-1 fas fa-chevron-down"></i>
+                    ) : (
+                      <i className="ml-1 fas fa-chevron-up"></i>
+                    )
+                  ) : null}
+                </div>
               </div>
             </div>
-
             {this.state.showContent ? (
-              <div className="content mt-1">
-                {note.content}
-              </div>
+              <div className="content mt-1">{note.content}</div>
             ) : null}
+            <div className="date mt-1">
+              {this.props.task
+                ? moment(note.date).startOf("day").fromNow()
+                : moment(note.date).format("MM/DD/YYYY")}
+            </div>
           </div>
         </div>
       </div>

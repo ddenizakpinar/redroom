@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { Formik } from "formik";
-import { CirclePicker } from "react-color";
 
 import Modal from "./Modal";
-import axiosConfig from "../axiosConfig";
 import Input from "./Input";
 import Schemas from "../Schemas";
 import Button from "./Button";
@@ -42,18 +40,12 @@ class NoteModal extends Component {
     }
   }
 
-  onColorChange = (color) => {
-    this.setState({ background: color.hex }, () => {
-      this.setFieldValue("background", color.hex);
-    });
-  };
-
   render() {
     return (
       <Modal
         show={this.props.show}
         closeModal={() => this.props.closeCreateNoteModal()}
-        title={this.props.editingCollection ? "Update Note" : "Create Note"}
+        title={this.props.editingNote ? "Update Note" : "Create Note"}
       >
         <div className="note-modal">
           <Formik
@@ -65,8 +57,8 @@ class NoteModal extends Component {
               date: new Date(),
             }}
             onSubmit={(e) =>
-              this.props.editingCollection
-                ? this.props.editCollection(e)
+              this.props.editingNote
+                ? this.props.editNote(e)
                 : this.props.createNote(e)
             }
             validationSchema={Schemas.noteSchema}
@@ -115,22 +107,20 @@ class NoteModal extends Component {
                       checked={values.checked}
                       setFieldValue={setFieldValue}
                     />
-                    {values.checked ? (
-                      <Datepicker
-                        value={values.date}
-                        setFieldValue={setFieldValue}
-                        name="date"
-                      />
-                    ) : null}
+                    <Datepicker
+                      value={values.date}
+                      setFieldValue={setFieldValue}
+                      name="date"
+                    />
                   </div>
                   <Button
                     type="button"
                     onClick={handleSubmit}
                     className="submit-button"
                   >
-                    {this.props.editingCollection ? "Update" : "Create"}
+                    {this.props.editingNote ? "Update" : "Create"}
                   </Button>
-                  {this.props.editingCollection ? (
+                  {this.props.editingNote ? (
                     <span
                       className="delete pr-1"
                       onClick={() => this.setState({ delete: true })}
@@ -143,7 +133,7 @@ class NoteModal extends Component {
                       <span>Are you sure?</span>
                       <span
                         className="yes pl-1"
-                        onClick={this.props.deleteCollection}
+                        onClick={this.props.deleteNote}
                       >
                         Yes
                       </span>

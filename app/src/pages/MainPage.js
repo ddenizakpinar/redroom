@@ -27,6 +27,16 @@ class MainPage extends Component {
       .catch((err) => {
         console.log(err);
       });
+    axiosConfig
+      .get("/note/")
+      .then((res) => {
+        this.setState({
+          notes: res.data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -44,10 +54,7 @@ class MainPage extends Component {
     }
   }
 
-  selectCollection(collection) {
-    console.log(collection);
-    this.setState({ selectedCollection: collection });
-  }
+  // Note
 
   openCreateNoteModal = (editingNote = null) => {
     this.setState({
@@ -66,7 +73,53 @@ class MainPage extends Component {
       .then((res) => {
         this.closeCreateNoteModal();
         const newNotes = this.state.notes.length ? this.state.notes : [];
-        newNotes.push(res.data);
+        if (this.state.selectedCollection.id === values.collection.id) {
+          newNotes.push(res.data);
+        }
+        this.setState((prevState) => ({
+          notes: newNotes,
+        }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  editNote = (values) => {
+    axiosConfig
+      .put("/note/" + this.state.editingNote.id, {
+        ...values,
+        categoryId: values.collection.id,
+      })
+      .then((res) => {
+        this.closeCreateNoteModal();
+
+        let newNotes = this.state.notes;
+        newNotes = newNotes.map((x) =>
+          x.id === this.state.editingNote.id ? { ...x, ...values } : x
+        );
+
+        if (values.collection.id !== this.state.editingNote.collection.id) {
+          newNotes = newNotes.filter((x) => x.id !== this.state.editingNote.id);
+        }
+
+        this.setState((prevState) => ({
+          notes: newNotes,
+        }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  deleteNote = (values) => {
+    axiosConfig
+      .delete("/note/" + this.state.editingNote.id)
+      .then((res) => {
+        this.closeCreateNoteModal();
+
+        let newNotes = this.state.notes;
+        newNotes = newNotes.filter((x) => x.id !== this.state.editingNote.id);
         this.setState((prevState) => ({
           notes: newNotes,
         }));
@@ -77,6 +130,11 @@ class MainPage extends Component {
   };
 
   // Collection
+
+  selectCollection(collection) {
+    this.setState({ selectedCollection: collection });
+  }
+
   openCreateCollectionModal = (editingCollection = null) => {
     this.setState({
       editingCollection: editingCollection,
@@ -159,7 +217,11 @@ class MainPage extends Component {
             ? this.state.collections.map((collection) => {
                 return (
                   <div
-                    className="collection"
+                    className={
+                      this.state.selectedCollection?.id === collection.id
+                        ? "collection active"
+                        : "collection "
+                    }
                     key={collection.id}
                     onClick={() => this.selectCollection(collection)}
                   >
@@ -208,13 +270,25 @@ class MainPage extends Component {
               <div className="tasks">
                 <div className="title">Tasks - {tasks.length}</div>
                 {tasks.map((note) => (
-                  <Note note={note} />
+                  <Note
+                    openCreateNoteModal={this.openCreateNoteModal}
+                    task
+                    key={note.id}
+                    note={note}
+                    selectedCollection={this.state.selectedCollection}
+                  />
                 ))}
               </div>
-              <div className="completed">
+              <div className="completed mt-4">
                 <div className="title">Completed - {completed.length}</div>
                 {completed.map((note) => (
-                  <Note note={note} />
+                  <Note
+                    openCreateNoteModal={this.openCreateNoteModal}
+                    completed
+                    key={note.id}
+                    note={note}
+                    selectedCollection={this.state.selectedCollection}
+                  />
                 ))}
               </div>
             </div>

@@ -493,32 +493,30 @@ code {
     background-color: $lightgrey;
     border-radius: 2rem;
     padding: 20px;
-
+    .delete {
+      cursor: pointer;
+      color: $red;
+      font-weight: 600;
+    }
+    .sure {
+      display: flex;
+      align-items: center;
+      font-size: $text-size-small;
+      color: white;
+      .yes {
+        padding-right: 8px;
+        cursor: pointer;
+        color: $red;
+        font-size: $text-size-medium;
+      }
+      .cancel {
+        cursor: pointer;
+      }
+    }
     .category-modal {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-
-      .delete {
-        cursor: pointer;
-        color: $red;
-        font-weight: 600;
-      }
-      .sure {
-        display: flex;
-        align-items: center;
-        font-size: $text-size-small;
-        color: white;
-        .yes {
-          padding-right: 8px;
-          cursor: pointer;
-          color: $red;
-          font-size: $text-size-medium;
-        }
-        .cancel {
-          cursor: pointer;
-        }
-      }
     }
 
     .note-modal {
@@ -591,9 +589,33 @@ code {
         font-size: $text-size-medium;
         font-weight: 500;
 
-        i{
+        i {
           cursor: pointer;
         }
+      }
+
+      .date {
+        display: none;
+        font-size: $text-size-small;
+        color: $white;
+      }
+    }
+    .icons {
+      display: flex;
+      align-items: center;
+      .fa-edit {
+        display: none;
+      }
+    }
+
+    &:hover {
+      .icons {
+        .fa-edit {
+          display: flex;
+        }
+      }
+      .date {
+        display: block;
       }
     }
   }

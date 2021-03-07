@@ -6,7 +6,7 @@ class DropdownX extends Component {
   onChangeHandler = (e) => {
     this.props.setFieldValue(
       this.props.name,
-      this.props.options.filter((x) => x[this.props.valueProp] == e.value)[0]
+      this.props.options.filter((x) => x[this.props.valueProp] === e.value)[0]
     );
   };
 

@@ -86,6 +86,10 @@ button:active {
       align-items: center;
       justify-content: space-between;
       padding: 0px 12px 0px 24px;
+
+      &.active {
+        background-color: $lightgrey;
+      }
       .info {
         display: flex;
         padding: 16px 0px;
