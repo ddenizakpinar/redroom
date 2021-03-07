@@ -36,6 +36,10 @@ class NoteModal extends Component {
         "content",
         this.props.editingNote ? this.props.editingNote.content : ""
       );
+      this.setFieldValue(
+        "collection",
+        this.props.editingNote ? this.props.editingNote.collection : this.props.collections[0],
+      );
       this.setState({ delete: false });
     }
   }
@@ -52,7 +56,7 @@ class NoteModal extends Component {
             initialValues={{
               title: "",
               content: "",
-              collection: this.props.selectedCollection,
+              collection: "",
               checked: true,
               date: new Date(),
             }}

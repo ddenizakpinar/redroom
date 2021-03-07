@@ -27,7 +27,9 @@ class Note extends Component {
             onClick={() => this.props.openCreateNoteModal(note)}
             className="mr-2"
             checked={note.checked}
-            color={this.props.selectedCollection?.background}
+            color={
+              note.collection?.background ? note.collection?.background : "white"
+            }
           />
           <div className="info mt-1">
             <div className="note-title">

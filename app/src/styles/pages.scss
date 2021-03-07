@@ -131,6 +131,19 @@ button:active {
     .title {
       font-weight: 700;
       font-size: $text-size-extra-big;
+      display: flex;
+      align-items: center;
+      .back-button {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 18px;
+        background-color: $lightgrey;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
 
     .add {

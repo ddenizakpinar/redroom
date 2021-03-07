@@ -41,20 +41,28 @@ class MainPage extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.selectedCollection !== this.state.selectedCollection) {
-      axiosConfig
-        .get("/note/" + this.state.selectedCollection?.id)
-        .then((res) => {
-          this.setState({
-            notes: res.data,
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      this.getNotes();
     }
   }
 
   // Note
+
+  getNotes = () => {
+    axiosConfig
+      .get(
+        this.state.selectedCollection
+          ? "/note/" + this.state.selectedCollection?.id
+          : "/note/"
+      )
+      .then((res) => {
+        this.setState({
+          notes: res.data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   openCreateNoteModal = (editingNote = null) => {
     this.setState({
@@ -99,9 +107,9 @@ class MainPage extends Component {
           x.id === this.state.editingNote.id ? { ...x, ...values } : x
         );
 
-        if (values.collection.id !== this.state.editingNote.collection.id) {
-          newNotes = newNotes.filter((x) => x.id !== this.state.editingNote.id);
-        }
+        // if (values.collection.id !== this.state.editingNote.collection.id) {
+        //   newNotes = newNotes.filter((x) => x.id !== this.state.editingNote.id);
+        // }
 
         this.setState((prevState) => ({
           notes: newNotes,
@@ -169,13 +177,13 @@ class MainPage extends Component {
       .put("/category/" + this.state.editingCollection.id, { ...values })
       .then((res) => {
         this.closeCreateCollectionModal();
-
         let newCollections = this.state.collections;
         newCollections = newCollections.map((x) =>
           x.id === this.state.editingCollection.id ? { ...x, ...values } : x
         );
         this.setState((prevState) => ({
           collections: newCollections,
+          selectedCollection: { ...this.state.selectedCollection, ...values },
         }));
       })
       .catch((err) => {
@@ -251,14 +259,28 @@ class MainPage extends Component {
         </div>
         <div className="notes">
           <div>
-            <div className="title">{this.state.selectedCollection?.name}</div>
+            <div className="title">
+              {this.state.selectedCollection ? (
+                <div
+                  className="back-button mr-1"
+                  onClick={() => this.setState({ selectedCollection: null })}
+                >
+                  <i className="fas fa-chevron-left"></i>
+                </div>
+              ) : null}
+              {this.state.selectedCollection
+                ? this.state.selectedCollection?.name
+                : "Activities"}
+            </div>
             <div
               className="add mt-4"
               onClick={() => this.openCreateNoteModal()}
             >
               <div
                 style={{
-                  backgroundColor: this.state.selectedCollection?.background,
+                  backgroundColor: this.state.selectedCollection
+                    ? this.state.selectedCollection?.background
+                    : "white",
                 }}
                 className="create"
               >
