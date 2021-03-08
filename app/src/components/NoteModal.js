@@ -20,8 +20,6 @@ class NoteModal extends Component {
     };
   }
 
-  componentDidMount() {}
-
   componentDidUpdate(prevProps) {
     if (prevProps.selectedCollection !== this.props.selectedCollection) {
       this.setFieldValue("collection", this.props.selectedCollection);
@@ -35,6 +33,10 @@ class NoteModal extends Component {
       this.setFieldValue(
         "content",
         this.props.editingNote ? this.props.editingNote.content : ""
+      );
+      this.setFieldValue(
+        "checked",
+        this.props.editingNote ? this.props.editingNote.checked : false
       );
       this.setFieldValue(
         "collection",
@@ -61,7 +63,7 @@ class NoteModal extends Component {
               title: "",
               content: "",
               collection: "",
-              checked: true,
+              checked: false,
               date: new Date(),
             }}
             onSubmit={(e) =>
@@ -97,6 +99,7 @@ class NoteModal extends Component {
                     value={values.content}
                     placeholder="Content"
                     error={touched.content && errors.content}
+                    rows={3}
                   />
                   {values.collection ? (
                     <Dropdown

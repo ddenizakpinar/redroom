@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 
 import CollectionModal from "../components/CollectionModal";
 import NoteModal from "../components/NoteModal";
@@ -17,26 +18,8 @@ class MainPage extends Component {
   }
 
   componentDidMount() {
-    axiosConfig
-      .get("/category")
-      .then((res) => {
-        this.setState({
-          collections: res.data,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    axiosConfig
-      .get("/note/")
-      .then((res) => {
-        this.setState({
-          notes: res.data,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.getCollections();
+    this.getNotes();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -85,10 +68,8 @@ class MainPage extends Component {
           this.state.selectedCollection == null ||
           this.state.selectedCollection.id === values.collection.id
         ) {
-          console.log("??");
           newNotes.push(res.data);
         }
-        console.log(this.state.selectedCollection);
         this.setState((prevState) => ({
           notes: newNotes,
         }));
@@ -111,10 +92,6 @@ class MainPage extends Component {
         newNotes = newNotes.map((x) =>
           x.id === this.state.editingNote.id ? { ...x, ...values } : x
         );
-
-        // if (values.collection.id !== this.state.editingNote.collection.id) {
-        //   newNotes = newNotes.filter((x) => x.id !== this.state.editingNote.id);
-        // }
 
         this.setState((prevState) => ({
           notes: newNotes,
@@ -143,6 +120,19 @@ class MainPage extends Component {
   };
 
   // Collection
+
+  getCollections = () => {
+    axiosConfig
+      .get("/category")
+      .then((res) => {
+        this.setState({
+          collections: res.data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   selectCollection(collection) {
     this.setState({ selectedCollection: collection });
@@ -215,6 +205,12 @@ class MainPage extends Component {
       });
   };
 
+  logout = () => {
+    localStorage.removeItem("token");
+    axiosConfig.defaults.headers.common["Authorization"] = "";
+    this.props.history.push("/login");
+  };
+
   render() {
     const tasks = this.state.notes.length
       ? this.state.notes?.filter((x) => !x.checked)
@@ -225,41 +221,50 @@ class MainPage extends Component {
     return (
       <div className="main-page">
         <div className="collections">
-          <div className="title">Collections</div>
-          {this.state.collections.length
-            ? this.state.collections.map((collection) => {
-                return (
-                  <div
-                    className={
-                      this.state.selectedCollection?.id === collection.id
-                        ? "collection active"
-                        : "collection "
-                    }
-                    key={collection.id}
-                    onClick={() => this.selectCollection(collection)}
-                  >
-                    <div className="info">
-                      <div
-                        className="color"
-                        style={{ backgroundColor: collection.background }}
-                      ></div>
-                      <div>{collection.name}</div>
-                    </div>
+          <div className="collections-wrap">
+            <div className="title">
+              <div>Collections</div>
+              <div className="logout" onClick={this.logout}>
+                <i className="fas fa-sign-out-alt"></i>
+              </div>
+            </div>
+            {this.state.collections.length
+              ? this.state.collections.map((collection) => {
+                  return (
                     <div
-                      className="edit"
-                      onClick={() => this.openCreateCollectionModal(collection)}
+                      className={
+                        this.state.selectedCollection?.id === collection.id
+                          ? "collection active"
+                          : "collection "
+                      }
+                      key={collection.id}
+                      onClick={() => this.selectCollection(collection)}
                     >
-                      <i className="fas fa-edit"></i>
+                      <div className="info">
+                        <div
+                          className="color"
+                          style={{ backgroundColor: collection.background }}
+                        ></div>
+                        <div>{collection.name}</div>
+                      </div>
+                      <div
+                        className="edit"
+                        onClick={() =>
+                          this.openCreateCollectionModal(collection)
+                        }
+                      >
+                        <i className="fas fa-edit"></i>
+                      </div>
                     </div>
-                  </div>
-                );
-              })
-            : null}
-          <div
-            className="create"
-            onClick={() => this.openCreateCollectionModal()}
-          >
-            <i className="fas fa-plus"></i>
+                  );
+                })
+              : null}
+            <div
+              className="create"
+              onClick={() => this.openCreateCollectionModal()}
+            >
+              <i className="fas fa-plus"></i>
+            </div>
           </div>
         </div>
         <div className="notes">
@@ -344,4 +349,4 @@ class MainPage extends Component {
   }
 }
 
-export default MainPage;
+export default withRouter(MainPage);

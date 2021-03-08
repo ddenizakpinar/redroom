@@ -4,12 +4,20 @@ import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 
 import axiosConfig from "../axiosConfig";
-import Note from "../assets/img/note.png";
+import Check from "../assets/img/check.svg";
 import Schemas from "../Schemas";
 import Input from "../components/Input";
 import Button from "../components/Button";
 
 class LoginPage extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      error: null,
+    };
+  }
+
   login = async (values, action) => {
     axiosConfig
       .post("/user/login", { ...values })
@@ -21,6 +29,7 @@ class LoginPage extends Component {
       })
       .catch((err) => {
         console.warn(err);
+        this.setState({ error: err.response.data.general });
       });
   };
 
@@ -35,7 +44,7 @@ class LoginPage extends Component {
           {({ handleChange, handleSubmit, values, touched, errors }) => {
             return (
               <div className="login-container">
-                <img src={Note} width={60} alt="" />
+                <img src={Check} width={70} alt="" />
                 <div className="title">Log in</div>
                 <Input
                   name="email"
@@ -52,6 +61,9 @@ class LoginPage extends Component {
                   type="password"
                   error={touched.password && errors.password}
                 />
+                <div className="error-message mb-1">
+                  {this.state.error && this.state.error}
+                </div>
                 <Button
                   type="button"
                   onClick={handleSubmit}

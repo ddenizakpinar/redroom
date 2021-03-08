@@ -1,5 +1,6 @@
 @import "./variables.scss";
 input:focus,
+textarea:focus,
 button:focus,
 button:active {
   outline: none;
@@ -60,62 +61,77 @@ button:active {
     color: $white;
 
     background-color: $grey;
-    .title {
-      padding: 30px 0px 15px 24px;
-      font-size: $text-size-big;
-    }
-    .create {
-      margin: 30px 0px 0px 24px;
-      cursor: pointer;
-      width: 30px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 10px;
-      background: linear-gradient(
-        90deg,
-        rgba(205, 105, 224, 1) 0%,
-        rgba(253, 164, 163, 1) 100%
-      );
-      font-size: 14px;
-    }
+    display: flex;
 
-    .collection {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0px 12px 0px 24px;
-
-      &.active {
-        background-color: $lightgrey;
-      }
-      .info {
+    .collections-wrap {
+      width: 100%;
+      .title {
         display: flex;
-        padding: 16px 0px;
-        border-radius: 0px;
-        align-items: flex-start;
-        cursor: pointer;
-      }
+        align-items: center;
+        padding: 30px 0px 15px 30px;
+        width: 80%;
 
-      .edit {
-        display: none;
-        cursor: pointer;
-        padding: 0px 4px;
+        font-size: $text-size-big;
+        justify-content: space-between;
+        .logout {
+          display: none;
+          cursor: pointer;
+        }
       }
-
-      .color {
-        margin-right: 8px;
-        width: 24px;
-        height: 24px;
-        border-radius: 6px;
-      }
-
       &:hover {
-        .edit {
+        .logout {
           display: block;
         }
-        background-color: $lightgrey;
+      }
+      .create {
+        margin: 30px 0px 0px 30px;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: $blue;
+        font-size: 14px;
+      }
+      .collection {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0px 12px 0px 30px;
+
+        &.active {
+          background-color: $lightgrey;
+        }
+        .info {
+          display: flex;
+          padding: 16px 0px;
+          border-radius: 0px;
+          align-items: flex-start;
+          cursor: pointer;
+        }
+
+        .edit {
+          display: none;
+          cursor: pointer;
+          padding: 0px 4px;
+        }
+
+        .color {
+          margin-right: 8px;
+          width: 24px;
+          height: 24px;
+          border-radius: 6px;
+        }
+
+        &:hover {
+          .edit {
+            display: block;
+          }
+          background-color: $lightgrey;
+        }
       }
     }
   }
