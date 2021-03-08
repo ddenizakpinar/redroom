@@ -1,7 +1,7 @@
 import axios from "axios";
-
+var firebaseURL = "FIREBASE_FUNCTIONS_URL";
 const instance = axios.create({
-  baseURL: "http://localhost:5000/redroom-809d5/us-central1/api",
+  baseURL: firebaseURL,
 });
 
 instance.interceptors.request.use(
