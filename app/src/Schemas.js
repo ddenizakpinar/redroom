@@ -2,7 +2,7 @@ import * as Yup from "yup";
 
 const Schemas = {
   loginSchema: Yup.object().shape({
-    email: Yup.string().required().min(5).max(20),
+    email: Yup.string().required().min(5).max(30),
     password: Yup.string().required().min(6).max(20),
   }),
   signupSchema: Yup.object().shape({

@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 import axiosConfig from "../axiosConfig";
 import Check from "../assets/img/check.svg";
 import Schemas from "../Schemas";
-import Input from "../components/Input";
+import { Input } from "../components/Input";
 import Button from "../components/Button";
 
 class LoginPage extends Component {

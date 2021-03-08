@@ -67,3 +67,4 @@ node_modules/
 
 config.js
 .firebaserc
+app/.netlify/state.json

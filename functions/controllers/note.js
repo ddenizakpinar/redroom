@@ -8,7 +8,11 @@ exports.newNote = async (request, response) => {
   }
 
   const categoriesRef = await db.collection("categories");
-  const category = await categoriesRef.doc(request.body.categoryId).get();
+
+  let category;
+  if (request.body.categoryId) {
+    category = await categoriesRef.doc(request.body.categoryId).get();
+  }
 
   const newNote = {
     title: request.body.title,
@@ -17,8 +21,8 @@ exports.newNote = async (request, response) => {
     createdAt: new Date().toISOString(),
     date: request.body.date,
     userId: request.user.user_id,
-    categoryId: request.body.categoryId,
-    collection: category.data()
+    categoryId: request.body.categoryId ? request.body.categoryId : "",
+    collection: request.body.categoryId ? category.data() : "",
   };
 
   db.collection("notes")

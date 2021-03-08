@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 
 import Schemas from "../Schemas";
 import axiosConfig from "../axiosConfig";
-import Input from "../components/Input";
+import { Input } from "../components/Input";
 import Button from "../components/Button";
 import Check from "../assets/img/check.svg";
 

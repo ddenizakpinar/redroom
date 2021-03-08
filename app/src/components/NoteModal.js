@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Formik } from "formik";
 
 import Modal from "./Modal";
-import Input from "./Input";
+import { Input, TextArea } from "./Input";
 import Schemas from "../Schemas";
 import Button from "./Button";
 import Dropdown from "./Dropdown";
@@ -43,8 +43,12 @@ class NoteModal extends Component {
         this.props.editingNote
           ? this.props.editingNote.collection
             ? this.props.editingNote.collection
-            : this.props.collections[0]
-          : this.props.collections[0]
+            : this.props.collections.length
+            ? this.props.collections[0]
+            : ""
+          : this.props.collections.length
+          ? this.props.collections[0]
+          : ""
       );
       this.setState({ delete: false });
     }
@@ -92,7 +96,7 @@ class NoteModal extends Component {
                     placeholder="Title"
                     error={touched.title && errors.title}
                   />
-                  <Input
+                  <TextArea
                     className="my-3"
                     name="content"
                     handleChange={handleChange}

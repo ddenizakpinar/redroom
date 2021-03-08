@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Formik } from "formik";
 
 import Modal from "./Modal";
-import Input from "./Input";
 import Schemas from "../Schemas";
 import Button from "./Button";
+import { Input } from "./Input";
 import ColorPicker from "./ColorPicker";
 
 class CategoryModal extends Component {
