@@ -210,4 +210,24 @@ button:active {
       width: 100%;
     }
   }
+  @media only screen and (max-width: $media-sm) {
+    grid-template-columns: 150px auto;
+    .notes {
+      width: 100%;
+    }
+    .collections {
+      width: 100%;
+      .collections-wrap {
+        .title {
+          padding-left: 15px;
+        }
+        .collection {
+          padding-left: 15px;
+        }
+        .create {
+          margin-left: 15px;
+        }
+      }
+    }
+  }
 }
