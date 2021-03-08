@@ -35,6 +35,7 @@ class Note extends Component {
             <div className="note-title">
               <div>{note.title}</div>
               <div className="icons">
+         
                 <i
                   onClick={() => this.props.openCreateNoteModal(note)}
                   className="fas fa-edit "

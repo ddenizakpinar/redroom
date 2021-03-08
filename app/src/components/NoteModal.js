@@ -38,7 +38,11 @@ class NoteModal extends Component {
       );
       this.setFieldValue(
         "collection",
-        this.props.editingNote ? this.props.editingNote.collection : this.props.collections[0],
+        this.props.editingNote
+          ? this.props.editingNote.collection
+            ? this.props.editingNote.collection
+            : this.props.collections[0]
+          : this.props.collections[0]
       );
       this.setState({ delete: false });
     }

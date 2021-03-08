@@ -14,11 +14,10 @@ class Signup extends Component {
     axiosConfig
       .post("/user/signup", { ...values })
       .then((res) => {
-        localStorage.setItem("token", res.data.token).then(() => {
-          axiosConfig.defaults.headers.common["Authorization"] =
-            "Bearer " + res.data.token;
-          this.props.history.push("/");
-        });
+        localStorage.setItem("token", res.data.token);
+        axiosConfig.defaults.headers.common["Authorization"] =
+          "Bearer " + res.data.token;
+        this.props.history.push("/");
       })
       .catch((err) => {
         console.warn(err);

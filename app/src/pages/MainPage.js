@@ -267,7 +267,7 @@ class MainPage extends Component {
             <div className="title">
               {this.state.selectedCollection ? (
                 <div
-                  className="back-button mr-1"
+                  className="back-button mr-2"
                   onClick={() => this.setState({ selectedCollection: null })}
                 >
                   <i className="fas fa-chevron-left"></i>

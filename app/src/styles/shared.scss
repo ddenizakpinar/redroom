@@ -478,7 +478,7 @@ code {
     height: 100%;
     z-index: -1;
     background-color: $black;
-    opacity: 50%;
+    opacity: 60%;
   }
   .title {
     text-align: center;
@@ -595,7 +595,6 @@ code {
       }
 
       .date {
-        display: none;
         font-size: $text-size-small;
         color: $white;
       }
