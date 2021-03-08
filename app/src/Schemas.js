@@ -15,7 +15,7 @@ const Schemas = {
     background: Yup.string().required(),
   }),
   noteSchema: Yup.object().shape({
-    title: Yup.string().required().min(3).max(20),
+    title: Yup.string().required().min(3).max(40),
     content: Yup.string().max(400),
     collection: Yup.mixed(),
     checked: Yup.bool().required(),
